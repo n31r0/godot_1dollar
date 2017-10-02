@@ -12,9 +12,10 @@ var Infinity = 88888888888888
 
 var unistroke_triangle = preload("unistroke.gd").new("triangle",[Vector2(137,139),Vector2(135,141),Vector2(133,144),Vector2(132,146),Vector2(130,149),Vector2(128,151),Vector2(126,155),Vector2(123,160),Vector2(120,166),Vector2(116,171),Vector2(112,177),Vector2(107,183),Vector2(102,188),Vector2(100,191),Vector2(95,195),Vector2(90,199),Vector2(86,203),Vector2(82,206),Vector2(80,209),Vector2(75,213),Vector2(73,213),Vector2(70,216),Vector2(67,219),Vector2(64,221),Vector2(61,223),Vector2(60,225),Vector2(62,226),Vector2(65,225),Vector2(67,226),Vector2(74,226),Vector2(77,227),Vector2(85,229),Vector2(91,230),Vector2(99,231),Vector2(108,232),Vector2(116,233),Vector2(125,233),Vector2(134,234),Vector2(145,233),Vector2(153,232),Vector2(160,233),Vector2(170,234),Vector2(177,235),Vector2(179,236),Vector2(186,237),Vector2(193,238),Vector2(198,239),Vector2(200,237),Vector2(202,239),Vector2(204,238),Vector2(206,234),Vector2(205,230),Vector2(202,222),Vector2(197,216),Vector2(192,207),Vector2(186,198),Vector2(179,189),Vector2(174,183),Vector2(170,178),Vector2(164,171),Vector2(161,168),Vector2(154,160),Vector2(148,155),Vector2(143,150),Vector2(138,148),Vector2(136,148)])
 
-var Unistrokes = [
-	unistroke_triangle
-	]
+var Unistrokes = []
+#var Unistrokes = [
+#	unistroke_triangle
+#	]
 
 func recognize(points):
 	points = Resample(points, NumPoints)
