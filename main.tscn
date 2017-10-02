@@ -114,6 +114,24 @@ params/hue_variation = 0.0
 params/anim_speed_scale = 1.0
 params/anim_initial_pos = 0.0
 
+[node name="saveGesturesToJson" type="Button" parent="gui"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 548.0
+margin/top = 656.0
+margin/right = 661.0
+margin/bottom = 689.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+text = "Save"
+flat = false
+
 [connection signal="pressed" from="gui/addGuester" to="." method="_on_addGuester_pressed"]
+
+[connection signal="pressed" from="gui/saveGesturesToJson" to="." method="_on_Button_pressed"]
 
 
