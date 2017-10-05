@@ -14,9 +14,12 @@ onready var gestureJsonFilePath = scriptPath+"recordedGestures.json"
 var maxInk = 1
 onready var curInk = maxInk
 
+
+
 var mouseCursorIconPath = scriptPath+"pencil.png"
 export var recording = true
 export var particleEffect = true
+export var particleColor = Color(1,1,1,1)
 
 var particleNode = null 
 func _ready():
@@ -25,56 +28,69 @@ func _ready():
 	if particleEffect:
 		particleNode = Particles2D.new()
 		particleNode.set_name("drawParticle")
+		particleNode.set_color(particleColor)
 		particleNode.set_pos(Vector2(50,50))
 		particleNode.set_initial_velocity(Vector2(0,0))
 		particleNode.set_use_local_space(false)
-		particleNode.set_amount(64)
+		particleNode.set_amount(32)
 		particleNode.set_lifetime(1)
 		particleNode.set_param(particleNode.PARAM_LINEAR_VELOCITY,0)
-		particleNode.set_param(particleNode.PARAM_GRAVITY_STRENGTH,0)
+		particleNode.set_param(particleNode.PARAM_GRAVITY_STRENGTH,200)
 		particleNode.set_param(particleNode.PARAM_INITIAL_SIZE,20)
 		position = particleNode.get_pos()
 		add_child(particleNode)
 	connect("mouse_enter",self,"_on_mouse_enter")
 	connect("mouse_exit",self,"_on_mouse_exit")
 	loadSavedGesturesFromJson(gestureJsonFilePath)
+	if not recording:
+		get_node("gui").hide()
 
 func _process(delta): pass
 
+var maximumRecPoints = 150
+var minimumRecPoints = 4
 func _input(event):
 	if canDraw:
+		
 		if (event.is_action_pressed("m_btn")):
 			draw = []
 			pressed = event.pressed
 			position.x = get_viewport().get_mouse_pos().x
 			position.y = get_viewport().get_mouse_pos().y
-			if particleEffect:
+			if particleEffect and (draw.size() < maximumRecPoints):
 				particleNode.set_emitting(true)
 				particleNode.set_pos(position)
 
 		if (event.is_action_released("m_btn")): ## detect the gesture from memory
 			pressed = event.pressed
-			if (draw.size() > 4):
+			if (draw.size() > minimumRecPoints) and (draw.size() < maximumRecPoints):
 				recogniseDrawnGesture()
 			curInk = maxInk
 
-		if (event.type == InputEvent.MOUSE_MOTION && pressed) and curInk > 0:
-			position.x = get_viewport().get_mouse_pos().x
-			position.y = get_viewport().get_mouse_pos().y
-			draw.append(position)
-			if particleEffect:
-				particleNode.set_pos(position)
-			if draw.size() % 2:update() ## dont update so often
-		if curInk <= 0:
-			recogniseDrawnGesture()
+		if (event.type == InputEvent.MOUSE_MOTION && pressed):
+			if (draw.size() < maximumRecPoints):
+				if curInk > 0:
+					position.x = get_viewport().get_mouse_pos().x
+					position.y = get_viewport().get_mouse_pos().y
+					draw.append(position)
+					if particleEffect:
+						particleNode.set_pos(position)
+					if draw.size() % 2:update() ## dont update so often
+				if curInk <= 0: ## recognise gesture even if user runs outa ink
+					recogniseDrawnGesture()
+			if particleEffect and (curInk < 0):particleNode.set_emitting(false)
 
 func recogniseDrawnGesture():
-	get_node("gui/status").set_text(str(guestures.recognize(draw)," ink left:",curInk))
+	if (draw.size() > maximumRecPoints): return
+	var recognisedGesture = guestures.recognize(draw)
+	var inkLeft = curInk
+	emit_signal("shapeDetected",recognisedGesture,inkLeft)
+	get_node("gui/status").set_text(str(recognisedGesture," ink left:",inkLeft))
 	get_node("gui/addGuester/draw").set_text(str("draw: ",draw.size()," uni: ",guestures.Unistrokes.size()))
 	if particleEffect: ## particle effect is optional
 		particleNode.set_pos(position)
 		particleNode.set_emitting(false)
-	emit_signal("shapeDetected",guestures.recognize(draw),curInk)
+	
 	drawColShapePolygon(draw)
 	curInk = maxInk
 	update()
@@ -83,7 +99,7 @@ func recogniseDrawnGesture():
 var savedGestures = []
 var data = {}
 func _on_addGuester_pressed():
-	if (draw.size() > 4):
+	if (draw.size() > minimumRecPoints) and (draw.size() < maximumRecPoints):
 		var new_guester = preload("unistroke.gd").new(get_node("gui/addGuester/guester_name").get_text(), draw)
 		guestures.Unistrokes.append(new_guester)
 		## store to array that will be written to the json file

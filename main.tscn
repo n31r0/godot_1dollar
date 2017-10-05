@@ -6,30 +6,31 @@
 
 focus/ignore_mouse = false
 focus/stop_mouse = false
-size_flags/horizontal = 2
-size_flags/vertical = 2
+size_flags/horizontal = 3
+size_flags/vertical = 3
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 1279.0
-margin/bottom = 644.0
+margin/right = 1278.0
+margin/bottom = 719.0
 script/script = ExtResource( 1 )
 recording = true
 particleEffect = true
+particleColor = Color( 0.981689, 0.414063, 1, 1 )
 lineThickness = 2
 lineColor = Color( 0.14238, 0.748477, 0.847656, 1 )
 inkHealthBarWidth = 100
 createColisions = true
 maxDrawnColShapes = 3
 
-[node name="gui" type="Control" parent="."]
+[node name="gui" type="Panel" parent="."]
 
-focus/ignore_mouse = true
-focus/stop_mouse = false
+focus/ignore_mouse = false
+focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 9.0
-margin/top = 4.0
-margin/right = 1280.0
+margin/left = 17.0
+margin/top = 671.0
+margin/right = 1274.0
 margin/bottom = 720.0
 
 [node name="status" type="Label" parent="gui"]
@@ -39,25 +40,24 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 796.0
-margin/top = 632.0
-margin/right = 1011.0
-margin/bottom = 665.0
+margin/left = 826.0
+margin/top = 2.0
+margin/right = 1041.0
+margin/bottom = 35.0
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
 [node name="addGuester" type="Button" parent="gui"]
 
-editor/display_folded = true
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 52.0
-margin/top = 661.0
-margin/right = 185.0
-margin/bottom = 683.0
+margin/left = 101.0
+margin/top = 5.0
+margin/right = 234.0
+margin/bottom = 27.0
 toggle_mode = false
 click_on_press = true
 enabled_focus_mode = 2
@@ -101,10 +101,10 @@ focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 613.0
-margin/top = 654.0
-margin/right = 726.0
-margin/bottom = 687.0
+margin/left = 594.0
+margin/top = 1.0
+margin/right = 707.0
+margin/bottom = 34.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
