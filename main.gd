@@ -1,4 +1,5 @@
-extends Node2D
+extends Control
+#extends Node2D
 
 ## todo- turn this into an addon for godot, so it is easier to reuse in other projects
 signal shapeDetected 
@@ -34,6 +35,8 @@ func _ready():
 		particleNode.set_param(particleNode.PARAM_INITIAL_SIZE,20)
 		position = particleNode.get_pos()
 		add_child(particleNode)
+	connect("mouse_enter",self,"_on_mouse_enter")
+	connect("mouse_exit",self,"_on_mouse_exit")
 	loadSavedGesturesFromJson(gestureJsonFilePath)
 
 func _process(delta): pass
@@ -71,10 +74,10 @@ func recogniseDrawnGesture():
 	if particleEffect: ## particle effect is optional
 		particleNode.set_pos(position)
 		particleNode.set_emitting(false)
+	emit_signal("shapeDetected",guestures.recognize(draw),curInk)
 	drawColShapePolygon(draw)
 	curInk = maxInk
 	update()
-	emit_signal("shapeDetected",guestures.recognize(draw))
 	if not recording : draw = []
 
 var savedGestures = []
@@ -128,12 +131,12 @@ func loadSavedGesturesFromJson(path):
 
 ## can we draw or not - the mouse needs to be inside the area
 var canDraw = false
-func _on_drawZone_mouse_enter():
+
+func _on_mouse_enter():
 	canDraw = true
 	Input.set_custom_mouse_cursor(load(mouseCursorIconPath),Vector2(30,20))
 	print("inside drawzone")
-
-func _on_drawZone_mouse_exit():
+func _on_mouse_exit():
 	canDraw = false
 	Input.set_custom_mouse_cursor(null)
 
@@ -178,6 +181,8 @@ func simplifyArr(inputArray,simplifyAmount): ##reduce the number of items in an 
 				inputArray.remove(itemInd)
 			itemInd+=1
 	return inputArray
+
+
 
 
 
