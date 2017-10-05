@@ -42,6 +42,7 @@ func addGesture(name, points):
 	Unistrokes.append(preload("unistroke.gd").new(name, points)) # append new unistroke
 
 func Resample(points, n):
+	if points.size() == 0:return
 	var I = PathLength(points)/(n - 1) # interval length
 	var D = 0.0
 	var newpoints = [points[0]]
@@ -144,6 +145,7 @@ func DistanceAtAngle(points, T, radians):
 	return PathDistance(points, T.points);
 
 func Centroid(points):
+	if points == null :return
 	var x = 0.0
 	var y = 0.0
 	for i in range(points.size()):
